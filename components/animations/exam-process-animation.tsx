@@ -1,77 +1,85 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { FileText, ClipboardCheck, BarChart2, Award } from "lucide-react"
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FileText, ClipboardCheck, BarChart2, Award } from "lucide-react";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 export function ExamProcessAnimation() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const timelineRef = useRef<gsap.core.Timeline | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current || typeof window === "undefined") return
+    if (!containerRef.current || typeof window === "undefined") return;
 
-    const steps = containerRef.current.querySelectorAll(".exam-step")
-    const icons = containerRef.current.querySelectorAll(".step-icon")
-    const lines = containerRef.current.querySelectorAll(".connector-line")
-    const celebrations = containerRef.current.querySelectorAll(".celebration")
+    const steps = containerRef.current.querySelectorAll(".exam-step");
+    const icons = containerRef.current.querySelectorAll(".step-icon");
+    const lines = containerRef.current.querySelectorAll(".connector-line");
+    const celebrations = containerRef.current.querySelectorAll(".celebration");
 
     // Set initial states
-    gsap.set(steps, { opacity: 0, y: 20 })
-    gsap.set(icons, { scale: 0.5, opacity: 0 })
-    gsap.set(lines, { scaleX: 0, transformOrigin: "left center" })
-    gsap.set(celebrations, { scale: 0, opacity: 0 })
+    gsap.set(steps, { opacity: 0, y: 20 });
+    gsap.set(icons, { scale: 0.5, opacity: 0 });
+    gsap.set(lines, { scaleX: 0, transformOrigin: "left center" });
+    gsap.set(celebrations, { scale: 0, opacity: 0 });
 
     // Create timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 70%",
-        end: "bottom 20%",
+        start: "top 100%",
+        end: "bottom+=100% bottom",
         scrub: 0.5,
         toggleActions: "play none none reverse",
       },
-    })
+    });
 
     // Animate each step
     steps.forEach((step, index) => {
       // First step appears immediately
       if (index === 0) {
-        tl.to(step, { opacity: 1, y: 0, duration: 0.5 }, 0)
-        tl.to(icons[index], { scale: 1, opacity: 1, duration: 0.5 }, 0)
+        tl.to(step, { opacity: 1, y: 0, duration: 0.5 }, 0);
+        tl.to(icons[index], { scale: 1, opacity: 1, duration: 0.5 }, 0);
       } else {
         // Animate connector line before the step appears
-        tl.to(lines[index - 1], { scaleX: 1, duration: 0.5 }, index * 0.5)
+        tl.to(lines[index - 1], { scaleX: 1, duration: 0.5 }, index * 0.5);
 
         // Then animate the step
-        tl.to(step, { opacity: 1, y: 0, duration: 0.5 }, index * 0.5 + 0.3)
-        tl.to(icons[index], { scale: 1, opacity: 1, duration: 0.5 }, index * 0.5 + 0.3)
+        tl.to(step, { opacity: 1, y: 0, duration: 0.5 }, index * 0.5 + 0.3);
+        tl.to(
+          icons[index],
+          { scale: 1, opacity: 1, duration: 0.5 },
+          index * 0.5 + 0.3
+        );
       }
-    })
+    });
 
     // Final celebration animation
-    tl.to(celebrations, { scale: 1.2, opacity: 1, duration: 0.5, stagger: 0.1 }, steps.length * 0.5)
+    tl.to(
+      celebrations,
+      { scale: 1.2, opacity: 1, duration: 0.5, stagger: 0.1 },
+      steps.length * 0.5
+    );
 
     // Store timeline for cleanup
-    timelineRef.current = tl
+    timelineRef.current = tl;
 
     return () => {
       if (timelineRef.current) {
-        timelineRef.current.kill()
+        timelineRef.current.kill();
       }
       ScrollTrigger.getAll().forEach((trigger) => {
         if (trigger.vars.trigger === containerRef.current) {
-          trigger.kill()
+          trigger.kill();
         }
-      })
-    }
-  }, [])
+      });
+    };
+  }, []);
 
   return (
     <div ref={containerRef} className="relative py-12">
@@ -84,7 +92,8 @@ export function ExamProcessAnimation() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-2">Receive Invitation</h3>
             <p className="text-sm text-muted-foreground">
-              Employees receive a personalized email invitation to take the assessment.
+              Employees receive a personalized email invitation to take the
+              assessment.
             </p>
           </div>
 
@@ -100,7 +109,8 @@ export function ExamProcessAnimation() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-2">Take Assessment</h3>
             <p className="text-sm text-muted-foreground">
-              Complete the personality assessment through our intuitive interface.
+              Complete the personality assessment through our intuitive
+              interface.
             </p>
           </div>
 
@@ -116,7 +126,8 @@ export function ExamProcessAnimation() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-2">Processing Results</h3>
             <p className="text-sm text-muted-foreground">
-              Our algorithms analyze responses to generate accurate personality profiles.
+              Our algorithms analyze responses to generate accurate personality
+              profiles.
             </p>
           </div>
 
@@ -132,7 +143,8 @@ export function ExamProcessAnimation() {
           <div className="text-center">
             <h3 className="text-xl font-bold mb-2">Receive Insights</h3>
             <p className="text-sm text-muted-foreground">
-              Access comprehensive reports with personalized insights and strengths.
+              Access comprehensive reports with personalized insights and
+              strengths.
             </p>
             <div className="celebration mt-4 flex justify-center space-x-2">
               <span className="inline-block w-3 h-3 bg-primary rounded-full"></span>
@@ -143,5 +155,5 @@ export function ExamProcessAnimation() {
         </div>
       </div>
     </div>
-  )
+  );
 }
