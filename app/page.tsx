@@ -22,7 +22,6 @@ import { ExamProcessAnimation } from "@/components/animations/exam-process-anima
 import { AnimatedText } from "@/components/animations/animated-text";
 import { FloatingElement } from "@/components/animations/floating-element";
 import { ParallaxBackground } from "@/components/animations/parallax-background";
-import { StatsSection } from "@/components/stats-section";
 
 export default function LoginPage() {
   // Refs for animation targets
@@ -209,6 +208,7 @@ export default function LoginPage() {
       }
     }
 
+    ScrollTrigger.refresh();
     // Cleanup function
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
