@@ -13,7 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, MoreHorizontal, Edit, Trash2, Shield, Ban } from "lucide-react"
+import { Search, MoreHorizontal, Edit, Trash2, Shield, Ban, Send } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 // Demo data
 const organizations = [
@@ -81,6 +82,7 @@ const organizations = [
 
 export function OrganizationsTable() {
   const [searchTerm, setSearchTerm] = useState("")
+  const { toast } = useToast()
 
   const filteredOrganizations = organizations.filter(
     (org) =>
@@ -140,6 +142,16 @@ export function OrganizationsTable() {
     }
   }
 
+  const handleSendReport = (organizationId: number, organizationName: string) => {
+    console.log(`Initiating report send for organization ID: ${organizationId}, Name: ${organizationName}`)
+
+    // Simulate API call and show feedback
+    toast({
+      title: "Report Sending Initiated",
+      description: `The report for ${organizationName} is being processed and will be sent shortly.`,
+    })
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center">
@@ -165,7 +177,7 @@ export function OrganizationsTable() {
               <TableHead>Tests Completed</TableHead>
               <TableHead>Compliance</TableHead>
               <TableHead>Created</TableHead>
-              <TableHead className="w-[80px]"></TableHead>
+              <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -202,6 +214,10 @@ export function OrganizationsTable() {
                         <DropdownMenuItem>
                           <Shield className="mr-2 h-4 w-4" />
                           <span>Compliance</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleSendReport(org.id, org.name)}>
+                          <Send className="mr-2 h-4 w-4" />
+                          <span>Send Report</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {org.status === "active" ? (

@@ -36,6 +36,9 @@ export default function LoginPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Ensure ScrollTrigger is registered (if not done globally)
+    gsap.registerPlugin(ScrollTrigger);
+
     // Header animation
     if (headerRef.current) {
       gsap.from(headerRef.current, {
@@ -208,12 +211,17 @@ export default function LoginPage() {
       }
     }
 
-    ScrollTrigger.refresh();
+    // Delay the refresh slightly to allow DOM painting after navigation
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100); // Adjust delay if needed (e.g., 50, 100, 200ms)
+
     // Cleanup function
     return () => {
+      clearTimeout(refreshTimeout); // Clear the timeout
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs on mount
 
   return (
     <div className="flex min-h-screen flex-col">
